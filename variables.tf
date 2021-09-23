@@ -13,3 +13,6 @@ variable "ssh_key_public" {
 variable "ssh_key_private" {
     default = "/home/alexkayhw/.ssh/id_rsa"
 }
+variable "ansible_user" {
+    default = "ansible"
+}

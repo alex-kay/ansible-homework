@@ -1,7 +1,7 @@
 
 resource "google_compute_instance" "lb_vm" {
   name         = "load-balancer-instance"
-  machine_type = "f1-micro"
+  machine_type = "e2-medium"
 
   boot_disk {
     initialize_params {
@@ -18,7 +18,7 @@ resource "google_compute_instance" "lb_vm" {
     }
   }
   metadata = {
-    ssh-keys = "ansible:${file(var.ssh_key_public)}"
+    ssh-keys = "${ansible_user}:${file(var.ssh_key_public)}"
   }
 
 provisioner "remote-exec" {
@@ -27,13 +27,13 @@ provisioner "remote-exec" {
     connection {
         host = "${self.network_interface.0.access_config.0.nat_ip}"
     type        = "ssh"
-    user        = "ansible"
+    user        = "${ansible_user}"
     private_key = "${file(var.ssh_key_private)}"
     }
 }
 
 provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ansible -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
 }
   
 
@@ -41,7 +41,7 @@ provisioner "local-exec" {
 
 resource "google_compute_instance" "vm1" {
   name         = "vm1-instance"
-  machine_type = "f1-micro"
+  machine_type = "e2-medium"
 
   boot_disk {
     initialize_params {
@@ -58,7 +58,7 @@ resource "google_compute_instance" "vm1" {
   }
 
     metadata = {
-    ssh-keys = "ansible:${file(var.ssh_key_public)}"
+    ssh-keys = "${ansible_user}:${file(var.ssh_key_public)}"
   }
 
 provisioner "remote-exec" {
@@ -67,19 +67,19 @@ provisioner "remote-exec" {
     connection {
         host = "${self.network_interface.0.access_config.0.nat_ip}"
     type        = "ssh"
-    user        = "ansible"
+    user        = "${ansible_user}"
     private_key = "${file(var.ssh_key_private)}"
     }
 }
 
 provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ansible -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
 }
 }
 
 resource "google_compute_instance" "vm2" {
   name         = "vm2-instance"
-  machine_type = "f1-micro"
+  machine_type = "e2-medium"
 
   boot_disk {
     initialize_params {
@@ -96,7 +96,7 @@ resource "google_compute_instance" "vm2" {
   }
 
     metadata = {
-    ssh-keys = "ansible:${file(var.ssh_key_public)}"
+    ssh-keys = "${var.ansible_user}:${file(var.ssh_key_public)}"
   }
 
 provisioner "remote-exec" {
@@ -105,13 +105,13 @@ provisioner "remote-exec" {
     connection {
         host = "${self.network_interface.0.access_config.0.nat_ip}"
     type        = "ssh"
-    user        = "ansible"
+    user        = var.ansible_user
     private_key = "${file(var.ssh_key_private)}"
     }
 }
 
 provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ansible -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
 }
 }
 // resource "google_compute_instance" "vm-win" {
