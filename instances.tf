@@ -61,21 +61,19 @@ resource "google_compute_instance" "vm1" {
     metadata = {
     ssh-keys = "${var.ansible_user}:${file(var.ssh_key_public)}"
   }
+  metadata_startup_script = "sudo apt -y install python"
 
-provisioner "remote-exec" {
-    inline = ["sudo apt -y install python"]
+# provisioner "remote-exec" {
+#     inline = ["sudo apt -y install python"]
 
-    connection {
-        host = "${self.network_interface.0.access_config.0.nat_ip}"
-    type        = "ssh"
-    user        = "${var.ansible_user}"
-    private_key = "${file(var.ssh_key_private)}"
-    }
-}
+#     connection {
+#         host = "${self.network_interface.0.access_config.0.nat_ip}"
+#     type        = "ssh"
+#     user        = "${var.ansible_user}"
+#     private_key = "${file(var.ssh_key_private)}"
+#     }
+# }
 
-provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} node.yml" 
-}
 }
 
 resource "google_compute_instance" "vm2" {
@@ -99,21 +97,20 @@ resource "google_compute_instance" "vm2" {
     metadata = {
     ssh-keys = "${var.ansible_user}:${file(var.ssh_key_public)}"
   }
+  metadata_startup_script = "sudo apt -y install python"
 
-provisioner "remote-exec" {
-    inline = ["sudo apt -y install python"]
+# provisioner "remote-exec" {
+#     inline = ["sudo apt -y install python"]
 
-    connection {
-        host = "${self.network_interface.0.access_config.0.nat_ip}"
-    type        = "ssh"
-    user        = var.ansible_user
-    private_key = "${file(var.ssh_key_private)}"
-    }
-}
+#     connection {
+#         host = "${self.network_interface.0.access_config.0.nat_ip}"
+#     type        = "ssh"
+#     user        = var.ansible_user
+#     private_key = "${file(var.ssh_key_private)}"
+#     }
+# }
 
-provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} node.yml" 
-}
+
 }
 // resource "google_compute_instance" "vm-win" {
 //   name         = "win-instance"
