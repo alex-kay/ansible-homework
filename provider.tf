@@ -9,5 +9,5 @@ provider "google-beta" {
   zone    = var.zone
 }
 provider "null" {
-    
+
 }

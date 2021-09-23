@@ -1,5 +1,5 @@
 
-resource "google_compute_instance" "lb_vm" {
+resource "google_compute_instance" "vm_lb" {
   name         = "load-balancer-instance"
   machine_type = "e2-medium"
 
@@ -8,7 +8,7 @@ resource "google_compute_instance" "lb_vm" {
       image = "debian-cloud/debian-9"
     }
   }
-  tags = ["ansible", "master"]
+  tags = ["ansible", "lb"]
 
   network_interface {
     # A default network is created for all GCP projects
@@ -21,22 +21,23 @@ resource "google_compute_instance" "lb_vm" {
     ssh-keys = "${var.ansible_user}:${file(var.ssh_key_public)}"
   }
 
-provisioner "remote-exec" {
-    inline = ["sudo apt -y install python"]
+  metadata_startup_script = "sudo apt -y install python"
 
-    connection {
-        host = "${self.network_interface.0.access_config.0.nat_ip}"
-    type        = "ssh"
-    user        = "${var.ansible_user}"
-    private_key = "${file(var.ssh_key_private)}"
-    }
-}
+#   provisioner "remote-exec" {
+#     inline = ["sudo apt -y install python"]
 
-# provisioner "local-exec" {
-#     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
-# }
-  
-depends_on = [google_compute_instance.vm1, google_compute_instance.vm2]
+#     connection {
+#       host        = self.network_interface.0.access_config.0.nat_ip
+#       type        = "ssh"
+#       user        = var.ansible_user
+#       private_key = file(var.ssh_key_private)
+#     }
+#   }
+
+  # provisioner "local-exec" {
+  #     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
+  # }
+
 
 }
 
@@ -58,21 +59,21 @@ resource "google_compute_instance" "vm1" {
     }
   }
 
-    metadata = {
+  metadata = {
     ssh-keys = "${var.ansible_user}:${file(var.ssh_key_public)}"
   }
   metadata_startup_script = "sudo apt -y install python"
 
-# provisioner "remote-exec" {
-#     inline = ["sudo apt -y install python"]
+  # provisioner "remote-exec" {
+  #     inline = ["sudo apt -y install python"]
 
-#     connection {
-#         host = "${self.network_interface.0.access_config.0.nat_ip}"
-#     type        = "ssh"
-#     user        = "${var.ansible_user}"
-#     private_key = "${file(var.ssh_key_private)}"
-#     }
-# }
+  #     connection {
+  #         host = "${self.network_interface.0.access_config.0.nat_ip}"
+  #     type        = "ssh"
+  #     user        = "${var.ansible_user}"
+  #     private_key = "${file(var.ssh_key_private)}"
+  #     }
+  # }
 
 }
 
@@ -94,21 +95,21 @@ resource "google_compute_instance" "vm2" {
     }
   }
 
-    metadata = {
+  metadata = {
     ssh-keys = "${var.ansible_user}:${file(var.ssh_key_public)}"
   }
   metadata_startup_script = "sudo apt -y install python"
 
-# provisioner "remote-exec" {
-#     inline = ["sudo apt -y install python"]
+  # provisioner "remote-exec" {
+  #     inline = ["sudo apt -y install python"]
 
-#     connection {
-#         host = "${self.network_interface.0.access_config.0.nat_ip}"
-#     type        = "ssh"
-#     user        = var.ansible_user
-#     private_key = "${file(var.ssh_key_private)}"
-#     }
-# }
+  #     connection {
+  #         host = "${self.network_interface.0.access_config.0.nat_ip}"
+  #     type        = "ssh"
+  #     user        = var.ansible_user
+  #     private_key = "${file(var.ssh_key_private)}"
+  #     }
+  # }
 
 
 }

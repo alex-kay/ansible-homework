@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: lb
   become: yes
   tasks:
     - name: install latest nginx
@@ -16,7 +16,6 @@
       service:
           name: nginx
           state: restarted
----
 - hosts: nodes
   become: yes
   gather_facts: yes

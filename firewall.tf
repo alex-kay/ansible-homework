@@ -23,7 +23,7 @@ resource "google_compute_firewall" "allow_ssh" {
     ports    = ["22"]
   }
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["ansible"]
+  target_tags   = ["ansible"]
 }
 
 resource "google_compute_firewall" "allow_load_balancer_ingress" {
@@ -34,5 +34,5 @@ resource "google_compute_firewall" "allow_load_balancer_ingress" {
     ports    = ["80"]
   }
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["master"]
+  target_tags   = ["lb"]
 }
