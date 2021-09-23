@@ -15,3 +15,16 @@ Use Ansible facts and templates to generate and copy the static .html files to e
 Use Ansible to configure a Reverse Proxy (Apache HTTP Server, Nginx, whatever you prefer...)
 
 If you know how to do it already, use Ansible from within terraform as a provisioner. If not, you can have different code for terrafor and ansible
+
+## Steps Done
+
+* Created 2 linux VMs to serve static files
+* Created 1 linux VM to load balance
+* Ansible run as a local provisioner
+* Generate html file with a template using facts
+* Nginx does round-robin load balancing
+
+## Steps to do
+
+* Connect to Win VM with Ansible
+* Provision it
