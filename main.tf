@@ -1,5 +1,5 @@
 resource "google_project_service" "compute_engine" {
-  project = "homework-tf"
+  project = var.project
   service = "compute.googleapis.com"
 
   timeouts {
@@ -81,6 +81,27 @@ resource "google_compute_instance" "vm2" {
     # }
   }
 }
+// resource "google_compute_instance" "vm-win" {
+//   name         = "win-instance"
+//   machine_type = "e2-medium"
+
+//   boot_disk {
+//     initialize_params {
+//       image = "windows-cloud/windows-server-2019-dc-v20210914"
+//     }
+//   }
+//   metadata {
+//     windows-startup-script-url = var.bucket_startup_win
+//   }
+//   tags = ["ansible", "node"]
+
+//   network_interface {
+//     # A default network is created for all GCP projects
+//     network = google_compute_network.vpc_network.id
+//     # access_config {
+//     # }
+//   }
+// }
 
 resource "google_compute_firewall" "allow_traffic_ansible" {
   name    = "ansible-firewall-http"

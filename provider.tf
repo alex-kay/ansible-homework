@@ -1,10 +1,10 @@
 provider "google" {
-  project = "homework-tf"
-  region  = "us-central1"
-  zone    = "us-central1-c"
+  project = var.project
+  region  = var.region
+  zone    = var.zone
 }
 provider "google-beta" {
-  project = "homework-tf"
-  region  = "us-central1"
-  zone    = "us-central1-c"
+  project = var.project
+  region  = var.region
+  zone    = var.zone
 }
