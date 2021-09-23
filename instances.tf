@@ -11,7 +11,7 @@ resource "google_compute_instance" "vm_lb" {
   tags = ["ansible", "lb"]
 
   network_interface {
-    network = google_compute_network.vpc_network.id
+    subnetwork = google_compute_subnetwork.vpc_subnet.id
     access_config {
       #
     }
@@ -36,7 +36,7 @@ resource "google_compute_instance" "vm1" {
   tags = ["ansible", "node"]
 
   network_interface {
-    network = google_compute_network.vpc_network.id
+    subnetwork = google_compute_subnetwork.vpc_subnet.id
     access_config {
     }
   }
@@ -60,7 +60,7 @@ resource "google_compute_instance" "vm2" {
   tags = ["ansible", "node"]
 
   network_interface {
-    network = google_compute_network.vpc_network.id
+    subnetwork = google_compute_subnetwork.vpc_subnet.id
     access_config {
     }
   }

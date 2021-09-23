@@ -13,7 +13,7 @@ resource "google_project_service" "compute_engine" {
 
 resource "null_resource" "example0" {
   provisioner "local-exec" {
-    command = "echo '[nodes] \n${google_compute_instance.vm1.network_interface.0.access_config.0.nat_ip} \n${google_compute_instance.vm2.network_interface.0.access_config.0.nat_ip} \n[lb] \n${google_compute_instance.vm_lb.network_interface.0.access_config.0.nat_ip}' > hosts"
+    command = "echo '[nodes] \n ${google_compute_instance.vm1.network_interface.0.access_config.0.nat_ip} \n ${google_compute_instance.vm2.network_interface.0.access_config.0.nat_ip} \n[lb] \n ${google_compute_instance.vm_lb.network_interface.0.access_config.0.nat_ip}' > hosts"
   }
   provisioner "local-exec" {
     command = "echo 'upstream backend {\nserver ${google_compute_instance.vm1.network_interface.0.network_ip}:80;\nserver ${google_compute_instance.vm2.network_interface.0.network_ip}:80;\n}\nserver {\n listen 80;\n listen [::]:80;\n location / {\n proxy_pass http://backend;\n proxy_set_header Host $host;\n } \n}' > lb.conf"
@@ -22,7 +22,7 @@ resource "null_resource" "example0" {
     google_compute_instance.vm1,
     google_compute_instance.vm2,
     google_compute_instance.vm_lb,
-    google_compute_router_nat.nat
+    # google_compute_router_nat.nat
   ]
 }
 resource "null_resource" "example1" {
