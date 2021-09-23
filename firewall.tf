@@ -22,8 +22,8 @@ resource "google_compute_firewall" "allow_ssh" {
     protocol = "tcp"
     ports    = ["22"]
   }
-  source_ranges = ["0.0.0.0/16"]
-  target_tags = ["node"]
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["ansible"]
 }
 
 resource "google_compute_firewall" "allow_load_balancer_ingress" {

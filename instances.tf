@@ -20,7 +20,6 @@ resource "google_compute_instance" "lb_vm" {
   metadata = {
     ssh-keys = "ansible:${file(var.ssh_key_public)}"
   }
-#   metadata_startup_script = "apt update && apt install nginx -y"
 
 provisioner "remote-exec" {
     inline = ["sudo apt -y install python"]
@@ -34,7 +33,7 @@ provisioner "remote-exec" {
 }
 
 provisioner "local-exec" {
-    command = "ansible-playbook -u ansible -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} playbook.yml" 
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ansible -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
 }
   
 
@@ -57,6 +56,25 @@ resource "google_compute_instance" "vm1" {
     access_config {
     }
   }
+
+    metadata = {
+    ssh-keys = "ansible:${file(var.ssh_key_public)}"
+  }
+
+provisioner "remote-exec" {
+    inline = ["sudo apt -y install python"]
+
+    connection {
+        host = "${self.network_interface.0.access_config.0.nat_ip}"
+    type        = "ssh"
+    user        = "ansible"
+    private_key = "${file(var.ssh_key_private)}"
+    }
+}
+
+provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ansible -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
+}
 }
 
 resource "google_compute_instance" "vm2" {
@@ -76,6 +94,25 @@ resource "google_compute_instance" "vm2" {
     access_config {
     }
   }
+
+    metadata = {
+    ssh-keys = "ansible:${file(var.ssh_key_public)}"
+  }
+
+provisioner "remote-exec" {
+    inline = ["sudo apt -y install python"]
+
+    connection {
+        host = "${self.network_interface.0.access_config.0.nat_ip}"
+    type        = "ssh"
+    user        = "ansible"
+    private_key = "${file(var.ssh_key_private)}"
+    }
+}
+
+provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ansible -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
+}
 }
 // resource "google_compute_instance" "vm-win" {
 //   name         = "win-instance"
