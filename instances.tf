@@ -17,12 +17,26 @@ resource "google_compute_instance" "lb_vm" {
       #
     }
   }
-
-  metadata_startup_script = "apt update && apt install nginx -y"
-
-  provisioner "local-exec" {
-    command = "echo  'hello world'"
+  metadata = {
+    ssh-keys = "ansible:${file(var.ssh_key_public)}"
   }
+#   metadata_startup_script = "apt update && apt install nginx -y"
+
+provisioner "remote-exec" {
+    inline = ["sudo apt -y install python"]
+
+    connection {
+        host = "${self.network_interface.0.access_config.0.nat_ip}"
+    type        = "ssh"
+    user        = "ansible"
+    private_key = "${file(var.ssh_key_private)}"
+    }
+}
+
+provisioner "local-exec" {
+    command = "ansible-playbook -u ansible -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} playbook.yml" 
+}
+  
 
 }
 
@@ -40,8 +54,8 @@ resource "google_compute_instance" "vm1" {
   network_interface {
     # A default network is created for all GCP projects
     network = google_compute_network.vpc_network.id
-    # access_config {
-    # }
+    access_config {
+    }
   }
 }
 
@@ -59,8 +73,8 @@ resource "google_compute_instance" "vm2" {
   network_interface {
     # A default network is created for all GCP projects
     network = google_compute_network.vpc_network.id
-    # access_config {
-    # }
+    access_config {
+    }
   }
 }
 // resource "google_compute_instance" "vm-win" {
