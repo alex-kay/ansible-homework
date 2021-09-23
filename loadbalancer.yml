@@ -4,11 +4,13 @@
   tasks:
     - name: install latest nginx
       apt: name=nginx state=latest
-    - name: start nginx
-      service:
-          name: nginx
-          state: started
     - name: enable nginx
       service:
           name: nginx
           enabled: yes
+    - name: Copy nginx.conf
+      template: src=nginx.conf dest=/etc/nginx/sites-enabled/lb.conf
+    - name: restart nginx
+      service:
+          name: nginx
+          state: restarted
