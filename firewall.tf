@@ -11,7 +11,7 @@ resource "google_compute_firewall" "allow_traffic_ansible" {
     ports    = ["80"]
   }
 
-  source_tags = ["ansible"]
+  source_ranges = ["10.0.0.0/16"]
   target_tags = ["ansible"]
 }
 

@@ -11,7 +11,6 @@ resource "google_compute_instance" "vm_lb" {
   tags = ["ansible", "lb"]
 
   network_interface {
-    # A default network is created for all GCP projects
     network = google_compute_network.vpc_network.id
     access_config {
       #
@@ -22,22 +21,6 @@ resource "google_compute_instance" "vm_lb" {
   }
 
   metadata_startup_script = "sudo apt -y install python"
-
-#   provisioner "remote-exec" {
-#     inline = ["sudo apt -y install python"]
-
-#     connection {
-#       host        = self.network_interface.0.access_config.0.nat_ip
-#       type        = "ssh"
-#       user        = var.ansible_user
-#       private_key = file(var.ssh_key_private)
-#     }
-#   }
-
-  # provisioner "local-exec" {
-  #     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
-  # }
-
 
 }
 
@@ -53,7 +36,6 @@ resource "google_compute_instance" "vm1" {
   tags = ["ansible", "node"]
 
   network_interface {
-    # A default network is created for all GCP projects
     network = google_compute_network.vpc_network.id
     access_config {
     }
@@ -63,17 +45,6 @@ resource "google_compute_instance" "vm1" {
     ssh-keys = "${var.ansible_user}:${file(var.ssh_key_public)}"
   }
   metadata_startup_script = "sudo apt -y install python"
-
-  # provisioner "remote-exec" {
-  #     inline = ["sudo apt -y install python"]
-
-  #     connection {
-  #         host = "${self.network_interface.0.access_config.0.nat_ip}"
-  #     type        = "ssh"
-  #     user        = "${var.ansible_user}"
-  #     private_key = "${file(var.ssh_key_private)}"
-  #     }
-  # }
 
 }
 
@@ -89,7 +60,6 @@ resource "google_compute_instance" "vm2" {
   tags = ["ansible", "node"]
 
   network_interface {
-    # A default network is created for all GCP projects
     network = google_compute_network.vpc_network.id
     access_config {
     }
@@ -99,18 +69,6 @@ resource "google_compute_instance" "vm2" {
     ssh-keys = "${var.ansible_user}:${file(var.ssh_key_public)}"
   }
   metadata_startup_script = "sudo apt -y install python"
-
-  # provisioner "remote-exec" {
-  #     inline = ["sudo apt -y install python"]
-
-  #     connection {
-  #         host = "${self.network_interface.0.access_config.0.nat_ip}"
-  #     type        = "ssh"
-  #     user        = var.ansible_user
-  #     private_key = "${file(var.ssh_key_private)}"
-  #     }
-  # }
-
 
 }
 // resource "google_compute_instance" "vm-win" {
