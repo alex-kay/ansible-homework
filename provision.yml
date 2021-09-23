@@ -11,7 +11,7 @@
     - name: Copy nginx.conf
       template:
         src: "lb.conf"
-        dest: "/etc/nginx/sites-enabled/lb.conf"
+        dest: "/etc/nginx/sites-enabled/default"
     - name: restart nginx
       service:
           name: nginx
