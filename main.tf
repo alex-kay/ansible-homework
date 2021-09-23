@@ -13,16 +13,17 @@ resource "google_project_service" "compute_engine" {
 
 resource "null_resource" "example0" {
   provisioner "local-exec" {
-    command = "echo '[nodes] \n vm1 ${google_compute_instance.vm1.network_interface.0.access_config.0.nat_ip} \n vm2 ${google_compute_instance.vm2.network_interface.0.access_config.0.nat_ip}' > hosts"
+    command = "echo '[nodes] \n vm1 ${google_compute_instance.vm1.network_interface.0.access_config.0.nat_ip} \n vm2 ${google_compute_instance.vm2.network_interface.0.access_config.0.nat_ip}' \n [lb] \n lb_vm ${google_compute_instance.lb_vm.network_interface.0.access_config.0.nat_ip}' > hosts"
   }
   depends_on = [
       google_compute_instance.vm1,
-      google_compute_instance.vm2
+      google_compute_instance.vm2,
+      google_compute_instance.lb_vm
     ]
 }
 resource "null_resource" "example1" {
     provisioner "local-exec" {
-        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} --private-key ${var.ssh_key_private} node.yml"
+        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i hosts --private-key ${var.ssh_key_private} provision.yml"
     }
     depends_on = [
         null_resource.example0

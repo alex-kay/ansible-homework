@@ -32,9 +32,9 @@ provisioner "remote-exec" {
     }
 }
 
-provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
-}
+# provisioner "local-exec" {
+#     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i '${self.network_interface.0.access_config.0.nat_ip},' --private-key ${var.ssh_key_private} loadbalancer.yml" 
+# }
   
 depends_on = [google_compute_instance.vm1, google_compute_instance.vm2]
 
