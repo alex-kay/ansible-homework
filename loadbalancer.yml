@@ -9,7 +9,7 @@
           name: nginx
           enabled: yes
     - name: Copy nginx.conf
-      template: src=nginx.conf dest=/etc/nginx/sites-enabled/lb.conf
+      template: src=lb.conf dest=/etc/nginx/sites-enabled/lb.conf
     - name: restart nginx
       service:
           name: nginx

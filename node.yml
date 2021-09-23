@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: yes
+  gather_facts: yes
   tasks:
     - name: install latest apache2
       apt: name=apache2 state=latest
@@ -12,3 +13,5 @@
       service:
           name: apache2
           enabled: yes
+    - name: write in html file
+      template: src=node.j2 dest=/var/www/html/index.html
