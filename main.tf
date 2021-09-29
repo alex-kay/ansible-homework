@@ -9,7 +9,7 @@ resource "google_project_service" "compute_engine" {
   disable_on_destroy         = false
 }
 
-resource "null_resource" "example0" {
+resource "null_resource" "provision_inventory" {
   provisioner "local-exec" {
     command = "echo '[nodes] \n ${google_compute_instance.vm1.network_interface.0.access_config.0.nat_ip} \n ${google_compute_instance.vm2.network_interface.0.access_config.0.nat_ip} \n[lb] \n ${google_compute_instance.vm_lb.network_interface.0.access_config.0.nat_ip}' > hosts"
   }
@@ -22,11 +22,11 @@ resource "null_resource" "example0" {
     google_compute_instance.vm_lb
   ]
 }
-resource "null_resource" "example1" {
+resource "null_resource" "provision_playbook" {
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ansible_user} -i hosts --private-key ${var.ssh_key_private} provision.yml"
   }
   depends_on = [
-    null_resource.example0
+    null_resource.provision_inventory
   ]
 }

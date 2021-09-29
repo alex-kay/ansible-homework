@@ -40,9 +40,9 @@ resource "google_compute_firewall" "allow_windows_egress" {
     protocol = "tcp"
     ports    = ["1688"]
   }
-  target_tags = ["win"]
-  destination_ranges   = ["35.190.247.13/32"]
-  direction = "EGRESS"
+  target_tags        = ["win"]
+  destination_ranges = ["35.190.247.13/32"]
+  direction          = "EGRESS"
 }
 resource "google_compute_firewall" "allow_windows_rdp" {
   name    = "windows-ingress-rdp"
@@ -51,6 +51,6 @@ resource "google_compute_firewall" "allow_windows_rdp" {
     protocol = "tcp"
     ports    = ["3389"]
   }
-  target_tags = ["win"]
-  source_ranges   = ["0.0.0.0/0"]
+  target_tags   = ["win"]
+  source_ranges = ["0.0.0.0/0"]
 }

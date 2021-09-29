@@ -32,8 +32,8 @@ resource "google_compute_subnetwork" "vpc_subnet" {
 # }
 
 resource "google_compute_route" "win_kms" {
-  name        = "windows-kms-route"
-  dest_range  = "35.190.247.13/32"
-  network     = google_compute_network.vpc_network.name
+  name             = "windows-kms-route"
+  dest_range       = "35.190.247.13/32"
+  network          = google_compute_network.vpc_network.name
   next_hop_gateway = "default-internet-gateway"
 }

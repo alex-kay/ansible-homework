@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ansible</title>
-</head>
-<body>
-    <h1>This is machine {{ ansible_hostname }} running {{ ansible_os_family }} {{ ansible_distribution }} {{ ansible_distribution_major_version }}</h1>
-</body>
-</html>
+#!/usr/bin/python3
+
+import cgi
+import subprocess
+
+print("content-type: text/html")
+print("This is machine {{ ansible_hostname }} running {{ ansible_os_family }} {{ ansible_distribution }} {{ ansible_distribution_major_version }}")
+print(subprocess.getoutput("/usr/games/fortune"))
