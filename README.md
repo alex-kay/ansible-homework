@@ -26,5 +26,5 @@ If you know how to do it already, use Ansible from within terraform as a provisi
 
 ## Steps to do
 
-* Connect to Win VM with Ansible
-* Provision it
+* ~~Connect to Win VM with Ansible~~
+* ~~Provision it~~
