@@ -20,27 +20,32 @@
   become: yes
   gather_facts: yes
   tasks:
-    - name: install apache2, fortunes and python3
+    - name: install nginx, fortunes and python3
       apt:
         pkg:
-        - apache2
+        - nginx
         - fortune
         - fortunes-off
         - python3
         - python3-pip
-    - name: enable module cgid
-      shell: "a2enmod cgid"
+        - fcgiwrap
+    # - name: enable module cgid
+    #   shell: "a2enmod cgid"
+    - name: create cgi-bin
+      file:
+        path: /usr/lib/cgi-bin
+        state: directory
     - name: write in cgi python script
       template: 
         src: cgi.j2
         dest: /usr/lib/cgi-bin/script.py
         mode: "0755"
-    - name: restart apache2
+    - name: restart nginx
       service:
-          name: apache2
+          name: nginx
           state: restarted
-    - name: enable apache2
+    - name: enable nginx
       service:
-          name: apache2
+          name: nginx
           enabled: yes
 

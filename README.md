@@ -24,7 +24,13 @@ If you know how to do it already, use Ansible from within terraform as a provisi
 * Generate html file with a template using facts
 * Nginx does round-robin load balancing
 
-## Steps to do
+## Task part Two
 
-* ~~Connect to Win VM with Ansible~~
-* ~~Provision it~~
+* Made a python script which outputs fortune
+* in playbook, copy script into Apache2 cgi-bin directory
+* enable cgi module for apache2
+* changed load balancer conf so it redirects to the script url
+
+## Terraform graph
+
+![graph](graph.png)

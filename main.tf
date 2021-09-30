@@ -32,6 +32,6 @@ resource "null_resource" "provision_playbook" {
 }
 
 output "lb_ip" {
-    description = "Load balancer IP"
-    value = google_compute_instance.vm_lb.network_interface.0.access_config.0.nat_ip
+  description = "Load balancer IP"
+  value       = google_compute_instance.vm_lb.network_interface.0.access_config.0.nat_ip
 }
