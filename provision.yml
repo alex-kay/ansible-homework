@@ -30,6 +30,11 @@
         - python3-pip
     - name: enable module cgid
       shell: "a2enmod cgid"
+    - name: write in cgi python script
+      template: 
+        src: cgi.j2
+        dest: /usr/lib/cgi-bin/script.py
+        mode: "0755"
     - name: restart apache2
       service:
           name: apache2
@@ -38,9 +43,4 @@
       service:
           name: apache2
           enabled: yes
-    - name: write in cgi python script
-      template: 
-        src: node.j2
-        dest: /usr/lib/cgi-bin/script.py
-        mode: "0755"
 
